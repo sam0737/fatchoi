@@ -20,6 +20,10 @@ module cetus_clmm::pool {
     /// The clmmpool
     public struct Pool<phantom CoinTypeA, phantom CoinTypeB> has key, store {
         id: UID,
+        numerator: u64,
+        denominator: u64,
+        pool_a: Balance<CoinTypeA>,
+        pool_b: Balance<CoinTypeB>,
     }
     
     /// Flash loan resource for swap.
@@ -43,7 +47,7 @@ module cetus_clmm::pool {
     ///     - `clock`
     public fun flash_swap<CoinTypeA, CoinTypeB>(
         _config: &GlobalConfig,
-        _pool: &mut Pool<CoinTypeA, CoinTypeB>,
+        pool: &mut Pool<CoinTypeA, CoinTypeB>,
         a2b: bool,
         _by_amount_in: bool,
         amount: u64,
@@ -51,9 +55,9 @@ module cetus_clmm::pool {
         _clock: &Clock,
     ): (Balance<CoinTypeA>, Balance<CoinTypeB>, FlashSwapReceipt<CoinTypeA, CoinTypeB>) {
         if (a2b) {
-            (balance::zero(), balance::create_for_testing(amount * 10), FlashSwapReceipt{ pay_amount: amount })
+            (balance::zero(), balance::split(&mut pool.pool_b, amount * pool.numerator / pool.denominator), FlashSwapReceipt{ pay_amount: amount })
         } else {
-            (balance::create_for_testing(amount * 10), balance::zero(), FlashSwapReceipt{ pay_amount: amount })
+            (balance::split(&mut pool.pool_a, amount * pool.numerator / pool.denominator), balance::zero(), FlashSwapReceipt{ pay_amount: amount })
         }
     }
 
@@ -70,13 +74,13 @@ module cetus_clmm::pool {
     ///     Null
     public fun repay_flash_swap<CoinTypeA, CoinTypeB>(
         _config: &GlobalConfig,
-        _pool: &mut Pool<CoinTypeA, CoinTypeB>,
-        _coin_a: Balance<CoinTypeA>,
-        _coin_b: Balance<CoinTypeB>,
+        pool: &mut Pool<CoinTypeA, CoinTypeB>,
+        coin_a: Balance<CoinTypeA>,
+        coin_b: Balance<CoinTypeB>,
         _receipt: FlashSwapReceipt<CoinTypeA, CoinTypeB>
     ) {
-        balance::destroy_for_testing(_coin_a);
-        balance::destroy_for_testing(_coin_b);
+        balance::join(&mut pool.pool_a, coin_a);
+        balance::join(&mut pool.pool_b, coin_b);
         let FlashSwapReceipt{ pay_amount: _ } = _receipt;
     }
 
@@ -86,7 +90,13 @@ module cetus_clmm::pool {
     }
 
     #[test_only]
-    public fun new_for_test<CoinTypeA, CoinTypeB>(ctx: &mut TxContext): Pool<CoinTypeA, CoinTypeB> {
-        Pool<CoinTypeA, CoinTypeB>{ id: object::new(ctx) }
+    public fun new_for_test<CoinTypeA, CoinTypeB>(numerator: u64, denominator: u64, ctx: &mut TxContext): Pool<CoinTypeA, CoinTypeB> {
+        Pool<CoinTypeA, CoinTypeB>{ 
+            id: object::new(ctx),
+            numerator: numerator,
+            denominator: denominator,
+            pool_a: balance::create_for_testing(9223372036854775808),
+            pool_b: balance::create_for_testing(9223372036854775808),
+        }
     }
 }

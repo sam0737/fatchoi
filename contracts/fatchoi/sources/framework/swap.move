@@ -59,7 +59,7 @@ module fatchoi::swap {
 
         let mut scenario = test_scenario::begin(initial_owner);
         let config = cetus_clmm::config::new_global_config_for_test(scenario.ctx());
-        let mut pool = cetus_clmm::pool::new_for_test<sui::sui::SUI, fatchoi::coin_bucket_v1::COIN_BUCKET_V1>(scenario.ctx());
+        let mut pool = cetus_clmm::pool::new_for_test<sui::sui::SUI, fatchoi::coin_bucket_v1::COIN_BUCKET_V1>(10, 1, scenario.ctx());
         let clock = sui::clock::create_for_testing(scenario.ctx());
         
         {

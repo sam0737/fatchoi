@@ -2,7 +2,7 @@
 
 [move]
 version = 2
-manifest_digest = "949C55A781EA4156BC49113A97EC362D633132C4A6D5905839456710BF5599F7"
+manifest_digest = "DF6BF6D8F9F065D92F490A7FD80D21A2A1697B6A082B744BF9BE0A15466BA097"
 deps_digest = "397E6A9F7A624706DBDFEE056CE88391A15876868FD18A88504DA74EB458D697"
 dependencies = [
   { name = "BucketProtocol" },
@@ -134,3 +134,11 @@ dependencies = [
 compiler-version = "1.27.2"
 edition = "2024.beta"
 flavor = "sui"
+
+[env]
+
+[env.mainnet]
+chain-id = "35834a8a"
+original-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
+latest-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
+published-version = "1"
