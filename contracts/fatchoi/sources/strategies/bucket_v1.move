@@ -1,5 +1,5 @@
 module fatchoi::bucket_v1 {
-    use sui::coin;
+    use sui::coin::{Self, Coin};
     use sui::sui::SUI;
     use cetus_clmm::config::GlobalConfig;
     use cetus_clmm::pool::Pool;
@@ -94,6 +94,11 @@ module fatchoi::bucket_v1 {
         vault.token_supply.increase_supply(amount)
     }
 
+    entry fun deposit_entry<T>(vault: &mut Vault<T>, clock: &Clock, flask: &mut Flask<BUCK>, fountain: &mut Fountain<SBUCK, SUI>, deposit: Coin<BUCK>, ctx: &mut TxContext) {
+        let balance = deposit(vault, clock, flask, fountain, deposit.into_balance(), ctx);
+        transfer::public_transfer(coin::from_balance(balance, ctx), ctx.sender());
+    }
+
     public fun withdraw<T>(
         vault: &mut Vault<T>,
         clock: &Clock,
@@ -119,6 +124,11 @@ module fatchoi::bucket_v1 {
 
         vault.token_supply.decrease_supply(withdraw);
         flask.withdraw(coin::from_balance(withdraw_balance, ctx))
+    }
+
+    entry fun withdraw_entry<T>(vault: &mut Vault<T>, clock: &Clock, flask: &mut Flask<BUCK>, fountain: &mut Fountain<SBUCK, SUI>, withdraw: Coin<T>, ctx: &mut TxContext) {
+        let balance = withdraw(vault, clock, flask, fountain, withdraw.into_balance(), ctx);
+        transfer::public_transfer(coin::from_balance(balance, ctx), ctx.sender());
     }
 
     fun stake_protocol<T>(

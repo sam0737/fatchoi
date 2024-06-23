@@ -2,7 +2,7 @@
 
 [move]
 version = 2
-manifest_digest = "DF6BF6D8F9F065D92F490A7FD80D21A2A1697B6A082B744BF9BE0A15466BA097"
+manifest_digest = "5655529F4EDFA9560F9DD244715DA9F8AE480F1FD33C3002CA3FF682AD1F2D81"
 deps_digest = "397E6A9F7A624706DBDFEE056CE88391A15876868FD18A88504DA74EB458D697"
 dependencies = [
   { name = "BucketProtocol" },
@@ -44,7 +44,7 @@ dependencies = [
 
 [[move.package]]
 name = "CetusClmm"
-source = { git = "https://github.com/CetusProtocol/cetus-clmm-interface.git", rev = "mainnet-v1.2.0", subdir = "sui/clmmpool" }
+source = { git = "https://github.com/CetusProtocol/cetus-clmm-interface.git", rev = "mainnet", subdir = "sui/clmmpool" }
 
 dependencies = [
   { name = "IntegerMate" },
@@ -62,7 +62,7 @@ dependencies = [
 
 [[move.package]]
 name = "IntegerMate"
-source = { git = "https://github.com/CetusProtocol/integer-mate.git", rev = "sui-v1.1.0", subdir = "sui" }
+source = { git = "https://github.com/CetusProtocol/integer-mate.git", rev = "mainnet-v1.23.1", subdir = "sui" }
 
 dependencies = [
   { name = "Sui" },
@@ -70,7 +70,7 @@ dependencies = [
 
 [[move.package]]
 name = "MoveSTL"
-source = { git = "https://github.com/CetusProtocol/move-stl.git", rev = "sui-v1.1.0", subdir = "sui" }
+source = { git = "https://github.com/CetusProtocol/move-stl.git", rev = "mainnet-v1.23.1", subdir = "sui" }
 
 dependencies = [
   { name = "Sui" },
@@ -140,5 +140,5 @@ flavor = "sui"
 [env.mainnet]
 chain-id = "35834a8a"
 original-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
-latest-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
-published-version = "1"
+latest-published-id = "0x39e6a5b3d2d08bf81fa5973bd9e93c5155aac9327715585c422dd86bf950a978"
+published-version = "3"
