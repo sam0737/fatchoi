@@ -1,0 +1,36 @@
+name: Build and Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to main branch
+
+jobs:    
+  build-and-deploy:
+    permissions:
+      contents: write
+      
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'  # Specify the Node.js version
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./frontend
+
+    - name: Build React project
+      run: npm run build
+      working-directory: ./frontend
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+        branch: gh-pages  # The branch the action should deploy to.
+        folder: frontend/dist  # The folder the action should deploy.
