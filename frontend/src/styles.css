@@ -47,7 +47,7 @@
   grid-area: progress;
   height: 4px;
   background: greenyellow;
-  animation: progressBar 5s linear;
+  animation: progressBar 15s linear;
   animation-play-state: paused;
   width: 0;
 }
