@@ -2,19 +2,21 @@ import { useState } from 'react';
 import * as Toast from '@radix-ui/react-toast';
 import { useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Container, Box, Button, Grid, Flex, Heading, Text, Separator } from "@radix-ui/themes";
-import { getBalance, Balance } from "./Balance";
-import { ShareSelector } from "./ShareSelector";
+import { getBalance, Balance } from "../Balance";
+import { ShareSelector } from "../ShareSelector";
 import { Transaction, coinWithBalance } from '@mysten/sui/transactions';
 
-import Constant from './strategies/BucketV1';
+import Constant, { GetData } from './BucketV1';
 import { SUI_CLOCK_OBJECT_ID } from '@mysten/sui/utils';
-import './styles.css'
+import '../styles.css'
 
 type TransactionResult =
   | { key?: string, success: string; error?: never }
   | { key?: string, error: string; success?: never };
 
-export function WalletStatus() {
+export default function WalletStatus() {
+  let { rates, tvl } = GetData()
+
   const account = useCurrentAccount();
   const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
@@ -28,7 +30,6 @@ export function WalletStatus() {
     setBuckSelected(value)
   }
   const handleFcSelection = (value: number) => {
-    console.log(value)
     setFcSelected(value)
   }
 
@@ -85,7 +86,6 @@ export function WalletStatus() {
       ]
     })
 
-    console.log(tx)
     signAndExecuteTransaction(
       { transaction: tx },
       {
@@ -101,6 +101,8 @@ export function WalletStatus() {
 
   return (
     <Container my="2">
+      <Heading>BUCK Staking</Heading>
+      <Heading size="4">TVL: ${tvl?.toFixed(2)} USDC</Heading>
       {account ? (
         <Box>
           <Toast.Provider swipeDirection="right">
@@ -130,7 +132,6 @@ export function WalletStatus() {
             <Toast.Viewport className="ToastViewport">
             </Toast.Viewport>
           </Toast.Provider>
-          <Heading>BUCK Staking</Heading>
           <Grid columns="100fr 100fr" m="4">
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Flex direction="column">
@@ -140,7 +141,10 @@ export function WalletStatus() {
                   <Text size="6" mb="2">
                     Deposit
                   </Text>
-                  <ShareSelector max={buckBalance.data?.totalBalance ?? 0} decimal={buckBalance.data.metadata?.decimals ?? 0} onValueChange={handleBuckSelection} />
+                  <ShareSelector max={buckBalance.data?.totalBalance ?? 0} decimal={buckBalance.data.metadata?.decimals ?? 0}
+                    rate={rates ? 1 / rates["SBUCK_BUCK"] / rates["fcBUCKv1_SBUCK"] : null}
+                    symbol="fcBUCKv1"
+                    onValueChange={handleBuckSelection} />
                 </Flex>
                 <Button my="2" color="green" onClick={handleDeposit} disabled={buckSelected == 0}>
                   Deposit
@@ -155,7 +159,10 @@ export function WalletStatus() {
                   <Text size="6" mb="2">
                     Withdraw
                   </Text>
-                  <ShareSelector max={(fcBalance.data?.totalBalance ?? 0)} decimal={fcBalance.data.metadata?.decimals ?? 0} onValueChange={handleFcSelection} />
+                  <ShareSelector max={(fcBalance.data?.totalBalance ?? 0)} decimal={fcBalance.data.metadata?.decimals ?? 0}
+                    rate={rates ? rates["SBUCK_BUCK"] * rates["fcBUCKv1_SBUCK"] : null}
+                    symbol="BUCK"
+                    onValueChange={handleFcSelection} />
                 </Flex>
                 <Button my="2" color="red" onClick={handleWithdraw} disabled={fcSelected == 0}>
                   Withdraw
@@ -165,7 +172,7 @@ export function WalletStatus() {
           </Grid>
         </Box>
       ) : (
-        <Text>Wallet not connected</Text>
+        <Box py="2">Wallet not connected</Box>
       )}
     </Container>
   );

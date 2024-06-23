@@ -54,8 +54,9 @@ export function Balance(props : BalanceProps) {
   let decimals = Number(data.metadata?.decimals || 0)
   return (
     <Flex direction="column">
-      <Text>{ data.metadata?.symbol }</Text>
-      <Text size="7" weight="bold">{ (Number(data.totalBalance) / Math.pow(10, decimals)).toFixed(3) }</Text>
+      <Text size="2">You have</Text>
+      <Text size="7" weight="bold">{ (Number(data.totalBalance) / Math.pow(10, decimals)).toFixed(3) } <Text size="5">{ data.metadata?.symbol }</Text></Text>
+      
     </Flex>
   );
 }

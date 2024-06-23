@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Flex, Grid, Slider } from "@radix-ui/themes";
+import { Button, Flex, Grid, Slider, Text } from "@radix-ui/themes";
 
 type ShareSelectorProps = {
   max: number;
   decimal: number;
+  rate: number | null;
+  symbol: string | null;
   onValueChange?: (value: number) => void;
 };
 
-export const ShareSelector: React.FC<ShareSelectorProps> = ({ max, decimal, onValueChange }) => {
+export const ShareSelector: React.FC<ShareSelectorProps> = ({ max, decimal, rate, symbol, onValueChange }) => {
   const [share, setShare] = useState(0);
   const [inputValue, setInputValue] = useState('');
 
@@ -93,6 +95,7 @@ export const ShareSelector: React.FC<ShareSelectorProps> = ({ max, decimal, onVa
       ))}
       </Grid>
       <input inputMode="decimal" value={inputValue} onChange={handleInputChange} onBlur={handleInputBlur} min={0} max={scaleValue(max)} onKeyDown={handleKeyDown} />
+      {rate ? (<Text size="2">= {(Number(inputValue) * rate).toFixed(3)} {symbol}</Text>) : (<Text size="2">Loading...</Text>)}
     </Flex>
   );
 };
