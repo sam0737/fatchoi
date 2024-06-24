@@ -102,7 +102,7 @@ export default function WalletStatus() {
   return (
     <Container my="2">
       <Heading>BUCK Staking</Heading>
-      <Heading size="4">TVL: ${tvl?.toFixed(2)} USDC</Heading>
+      <Heading size="4">TVL: ${tvl?.toFixed(2)}</Heading>
       {account ? (
         <Box>
           <Toast.Provider swipeDirection="right">

@@ -19,6 +19,7 @@ export function GetData() {
     [c.vault]: "fcBUCKv1_SBUCK",
     "0xc6ecc9731e15d182bc0a46ebe1754a779a4bfb165c201102ad51a36838a1a7b8": "SBUCK_BUCK",
     "0xbb7f0d0974628c11fe1f33696247a9ffebf1f6ed67f78921633f9e2816141aa8": "USDC_BUCK",
+    "0x1c400c096e8b52a22c43c080fea4aa22661c9a35b469493dfac5332aecb4789c": "USDC_USD",
   }
 
   let rates: Record<string, number> = {}
@@ -53,6 +54,6 @@ export function GetData() {
   })
 
   let vault = (data[0].data?.content as { fields: any })?.fields
-  let tvl = vault.total_holding / Math.pow(10, 9) * rates["fcBUCKv1_SBUCK"] * rates["SBUCK_BUCK"] / rates["USDC_BUCK"]
+  let tvl = vault.total_holding / Math.pow(10, 9) * rates["fcBUCKv1_SBUCK"] * rates["SBUCK_BUCK"] / rates["USDC_BUCK"] * rates["USDC_USD"]
   return {rates, tvl}
 }
