@@ -53,6 +53,6 @@ export function GetData() {
   })
 
   let vault = (data[0].data?.content as { fields: any })?.fields
-  let tvl = vault.total_holding / Math.pow(10, 9) * rates["SBUCK_BUCK"] / rates["USDC_BUCK"]
+  let tvl = vault.total_holding / Math.pow(10, 9) * rates["fcBUCKv1_SBUCK"] * rates["SBUCK_BUCK"] / rates["USDC_BUCK"]
   return {rates, tvl}
 }
