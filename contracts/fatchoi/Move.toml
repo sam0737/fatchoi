@@ -1,7 +1,7 @@
 [package]
 name = "fatchoi"
 edition = "2024.beta" # edition = "legacy" to use legacy (pre-2024) Move
-published-at = "0xc421c353c183e698a80835171c5badb3c5788d00063d020f725f6aaa52a96a3a"
+published-at = "0xdcb8676bafa219485e1bec71fbabbc78518428f33d969d6b3aa413d71669e7d2"
 
 # license = ""           # e.g., "MIT", "GPL", "Apache 2.0"
 # authors = ["..."]      # e.g., ["Joe Smith (joesmith@noemail.com)", "John Snow (johnsnow@noemail.com)"]

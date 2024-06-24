@@ -18,7 +18,7 @@ module fatchoi::bucket_v1 {
     const ERR_SWAP_CLEAR_INTERMEDIATE: u64 = 1005;
     const ERR_SWAP_CLEAR_SOURCE: u64 = 1006;
     
-    const VERSION: u64 = 2;
+    const VERSION: u64 = 3;
     const PROFIT_TARGET: u64 = 1000000000;
 
     public struct Vault<phantom T> has key {
@@ -274,7 +274,7 @@ module fatchoi::bucket_v1 {
     }
 
     fun assert_pacakge_version<T>(vault: &Vault<T>) {
-        assert!(vault.version == VERSION, ERR_WRONG_VERSION);
+        assert!(vault.version >= VERSION, ERR_WRONG_VERSION);
     }
 
     #[test]

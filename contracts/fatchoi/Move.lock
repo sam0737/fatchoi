@@ -2,7 +2,7 @@
 
 [move]
 version = 2
-manifest_digest = "D96262992BEEA3BC37031BFA1858FB592F15659ADA632C90D6B0E1C91ADCB0A5"
+manifest_digest = "80E42A4051473C6F4B57471D5CBCDABEE8F8499D325C63BA94A61BDD267FE84F"
 deps_digest = "397E6A9F7A624706DBDFEE056CE88391A15876868FD18A88504DA74EB458D697"
 dependencies = [
   { name = "BucketProtocol" },
@@ -89,8 +89,6 @@ dependencies = [
   { name = "Wormhole" },
 ]
 
-[env]
-
 [[move.package]]
 name = "Sui"
 source = { git = "https://github.com/MystenLabs/sui.git", rev = "framework/mainnet", subdir = "crates/sui-framework/packages/sui-framework" }
@@ -99,12 +97,6 @@ dependencies = [
   { name = "MoveStdlib" },
 ]
 
-[env.mainnet]
-chain-id = "35834a8a"
-original-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
-latest-published-id = "0xc421c353c183e698a80835171c5badb3c5788d00063d020f725f6aaa52a96a3a"
-published-version = "4"
-
 [[move.package]]
 name = "SupraOracle"
 source = { git = "https://github.com/Bucket-Protocol/oracle.git", rev = "mainnet", subdir = "partners/supra" }
@@ -112,6 +104,8 @@ source = { git = "https://github.com/Bucket-Protocol/oracle.git", rev = "mainnet
 dependencies = [
   { name = "Sui" },
 ]
+
+[env]
 
 [[move.package]]
 name = "SwitchboardStdLib"
@@ -129,6 +123,12 @@ source = { git = "https://github.com/Bucket-Protocol/oracle.git", rev = "mainnet
 dependencies = [
   { name = "Sui" },
 ]
+
+[env.mainnet]
+chain-id = "35834a8a"
+original-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
+latest-published-id = "0xdcb8676bafa219485e1bec71fbabbc78518428f33d969d6b3aa413d71669e7d2"
+published-version = "5"
 
 [[move.package]]
 name = "fountain"
