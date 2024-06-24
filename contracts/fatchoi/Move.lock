@@ -2,7 +2,7 @@
 
 [move]
 version = 2
-manifest_digest = "80E42A4051473C6F4B57471D5CBCDABEE8F8499D325C63BA94A61BDD267FE84F"
+manifest_digest = "D120B8F711F7AE90EA499349D00F96527943BBA0F1B9D011D62C5142D6DF10D1"
 deps_digest = "397E6A9F7A624706DBDFEE056CE88391A15876868FD18A88504DA74EB458D697"
 dependencies = [
   { name = "BucketProtocol" },
@@ -105,8 +105,6 @@ dependencies = [
   { name = "Sui" },
 ]
 
-[env]
-
 [[move.package]]
 name = "SwitchboardStdLib"
 source = { git = "https://github.com/Bucket-Protocol/oracle.git", rev = "mainnet", subdir = "partners/switchboard" }
@@ -124,11 +122,7 @@ dependencies = [
   { name = "Sui" },
 ]
 
-[env.mainnet]
-chain-id = "35834a8a"
-original-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
-latest-published-id = "0xdcb8676bafa219485e1bec71fbabbc78518428f33d969d6b3aa413d71669e7d2"
-published-version = "5"
+[env]
 
 [[move.package]]
 name = "fountain"
@@ -142,3 +136,9 @@ dependencies = [
 compiler-version = "1.27.2"
 edition = "2024.beta"
 flavor = "sui"
+
+[env.mainnet]
+chain-id = "35834a8a"
+original-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
+latest-published-id = "0x4df19624ada117f12e6460ab21197be46c7b7a334eb8599bbd3a2cfae10bef95"
+published-version = "6"
