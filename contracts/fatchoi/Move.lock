@@ -2,7 +2,7 @@
 
 [move]
 version = 2
-manifest_digest = "D120B8F711F7AE90EA499349D00F96527943BBA0F1B9D011D62C5142D6DF10D1"
+manifest_digest = "3A1D7A40D6D1DA62B7841E1B9762A113EB8AF04DFAD79A5BBABD187CCCCF340D"
 deps_digest = "397E6A9F7A624706DBDFEE056CE88391A15876868FD18A88504DA74EB458D697"
 dependencies = [
   { name = "BucketProtocol" },
@@ -122,8 +122,6 @@ dependencies = [
   { name = "Sui" },
 ]
 
-[env]
-
 [[move.package]]
 name = "fountain"
 source = { git = "https://github.com/Fountain-Fi/contract.git", rev = "main", subdir = "fountain" }
@@ -137,8 +135,10 @@ compiler-version = "1.27.2"
 edition = "2024.beta"
 flavor = "sui"
 
+[env]
+
 [env.mainnet]
 chain-id = "35834a8a"
 original-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
-latest-published-id = "0x4df19624ada117f12e6460ab21197be46c7b7a334eb8599bbd3a2cfae10bef95"
-published-version = "6"
+latest-published-id = "0x09e7118478c07efbe5cf382bb2a9752b8baf91827d4c7c9d70cf386cfa451e90"
+published-version = "7"

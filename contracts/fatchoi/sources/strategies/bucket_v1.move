@@ -17,15 +17,15 @@ module fatchoi::bucket_v1 {
     const ERR_UNSTAKE_SANITY_CHECK: u64 = 1004;
     const ERR_SWAP_CLEAR_INTERMEDIATE: u64 = 1005;
     const ERR_SWAP_CLEAR_SOURCE: u64 = 1006;
-    
-    const VERSION: u64 = 4;
+
+    const VERSION: u64 = 5;
     const PROFIT_TARGET: u64 = 1000000000;
 
     public struct Vault<phantom T> has key {
         id: UID,
         version: u64,
         token_supply: Supply<T>,
-        
+
         total_holding: u64,
         holding: vector<StakeProof<SBUCK, SUI>>,
 
@@ -33,14 +33,16 @@ module fatchoi::bucket_v1 {
         profit: Balance<SUI>,
     }
 
+    // deprecated event
     public struct DepositEvent<phantom T> has copy, drop {
         vault_id: ID,
         amount: u64,
         minted: u64,
         before: u64,
-        after: u64,        
+        after: u64,
     }
 
+    // deprecated event
     public struct WithdrawEvent<phantom T> has copy, drop {
         vault_id: ID,
         burnt: u64,
@@ -48,8 +50,31 @@ module fatchoi::bucket_v1 {
         before: u64,
         after: u64,
     }
-    
+
+    // deprecated event
     public struct RestakeEvent<phantom T> has copy, drop {
+        vault_id: ID,
+        before: u64,
+        after: u64,
+    }
+
+    public struct Deposit has copy, drop {
+        vault_id: ID,
+        amount: u64,
+        minted: u64,
+        before: u64,
+        after: u64,
+    }
+
+    public struct Withdraw has copy, drop {
+        vault_id: ID,
+        burnt: u64,
+        amount: u64,
+        before: u64,
+        after: u64,
+    }
+
+    public struct Restake has copy, drop {
         vault_id: ID,
         before: u64,
         after: u64,
@@ -59,9 +84,9 @@ module fatchoi::bucket_v1 {
         id: UID,
         vault_id: ID,
     }
-    
+
     public fun create<T>(token_treasury: coin::TreasuryCap<T>, ctx: &mut TxContext): (Vault<T>, AdminCap) {
-        let vault = Vault<T> { 
+        let vault = Vault<T> {
             id: object::new(ctx),
             version: VERSION,
             token_supply: coin::treasury_into_supply(token_treasury),
@@ -76,7 +101,7 @@ module fatchoi::bucket_v1 {
 
     #[allow(lint(share_owned))]
     entry fun create_entry<T>(token_treasury: coin::TreasuryCap<T>, ctx: &mut TxContext) {
-        let (vault, admin_cap) = create(token_treasury, ctx);  
+        let (vault, admin_cap) = create(token_treasury, ctx);
         transfer::share_object(vault);
         transfer::transfer(admin_cap, ctx.sender());
     }
@@ -90,8 +115,8 @@ module fatchoi::bucket_v1 {
         vault.profit.withdraw_all()
     }
 
-    entry fun collect_profit_entry<T>(vault: &mut Vault<T>, admin_cap: &AdminCap, ctx: &mut TxContext) {        
-        let profit = collect_profit(vault, admin_cap);        
+    entry fun collect_profit_entry<T>(vault: &mut Vault<T>, admin_cap: &AdminCap, ctx: &mut TxContext) {
+        let profit = collect_profit(vault, admin_cap);
         transfer::public_transfer(coin::from_balance(profit, ctx), ctx.sender());
     }
 
@@ -116,8 +141,8 @@ module fatchoi::bucket_v1 {
         let before = vault.total_holding;
         vault.total_holding = vault.total_holding + sbucks.value();
         vault.stake_protocol(clock, fountain, sbucks, ctx);
-        
-        event::emit(DepositEvent<T> {
+
+        event::emit(Deposit {
             vault_id: object::id(vault),
             amount: deposit_amount,
             minted: amount,
@@ -153,13 +178,13 @@ module fatchoi::bucket_v1 {
         let withdraw_balance = sbucks.split(amount);
         let before = vault.total_holding;
         vault.total_holding = sbucks.value();
-        
+
         vault.stake_protocol(clock, fountain, sbucks, ctx);
         let burnt_amount = withdraw.value();
         vault.token_supply.decrease_supply(withdraw);
         let bucks = flask.withdraw(coin::from_balance(withdraw_balance, ctx));
-                
-        event::emit(WithdrawEvent<T> {
+
+        event::emit(Withdraw {
             vault_id: object::id(vault),
             burnt: burnt_amount,
             amount: bucks.value(),
@@ -194,7 +219,7 @@ module fatchoi::bucket_v1 {
         clock: &Clock,
         fountain: &mut Fountain<SBUCK, SUI>
         ): (Balance<SBUCK>, Balance<SUI>) {
-        
+
         let mut sbucks = balance::zero<SBUCK>();
         let mut suis = balance::zero<SUI>();
 
@@ -205,11 +230,11 @@ module fatchoi::bucket_v1 {
             sbucks.join(sbuck);
             suis.join(sui);
         };
-        
+
         assert!(vault.total_holding == sbucks.value(), ERR_UNSTAKE_SANITY_CHECK);
         (sbucks, suis)
     }
-    
+
     public entry fun restake_protocol<T, X>(
         vault: &mut Vault<T>,
         admin_cap: &AdminCap,
@@ -223,15 +248,15 @@ module fatchoi::bucket_v1 {
         ) {
         assert_pacakge_version(vault);
         assert_admin_cap(vault, admin_cap);
-        
+
         let (mut sbucks, suis) = vault.unstake_protocol(clock, fountain);
         vault.profit.join(suis);
 
         // profit is reserved for admin, then the remaining is converted to SBUCKS and restaked
         if (vault.profit.value() > vault.profit_target) {
             let delta = vault.profit.value() - vault.profit_target;
-            let suis = vault.profit.split(delta);            
-            
+            let suis = vault.profit.split(delta);
+
             // swap SUIs to BUCKs
             let (xs, suis) = fatchoi::swap::swap(config, pool_a, balance::zero(), suis, false, clock);
             let (bucks, xs) = fatchoi::swap::swap(config, pool_b, balance::zero(), xs, false, clock);
@@ -239,17 +264,17 @@ module fatchoi::bucket_v1 {
             xs.destroy_zero();
             assert!(suis.value() == 0, ERR_SWAP_CLEAR_SOURCE);
             suis.destroy_zero();
-            
+
             if (bucks.value() > 0) {
                 sbucks.join(flask.deposit(coin::from_balance(bucks, ctx)));
             } else {
                 bucks.destroy_zero();
             };
         };
-        
+
         let before = vault.total_holding;
         vault.total_holding = sbucks.value();
-        event::emit(RestakeEvent<T> {
+        event::emit(Restake {
             vault_id: object::id(vault),
             before: before,
             after: vault.total_holding,
@@ -274,7 +299,7 @@ module fatchoi::bucket_v1 {
     }
 
     fun assert_pacakge_version<T>(vault: &Vault<T>) {
-        assert!(vault.version >= VERSION, ERR_WRONG_VERSION);
+        assert!(vault.version == VERSION, ERR_WRONG_VERSION);
     }
 
     #[test]
@@ -283,7 +308,7 @@ module fatchoi::bucket_v1 {
         let alice = @0xA1CE;
         let bob = @0xB0B;
 
-        let mut scenario = test_scenario::begin(alice);        
+        let mut scenario = test_scenario::begin(alice);
         let (mut vault, admin_cap, mut flask, mut fountain, fountain_admin_cap, clock) = test_init(&mut scenario);
         {
             scenario.next_tx(alice);
@@ -316,7 +341,7 @@ module fatchoi::bucket_v1 {
         let alice = @0xA1CE;
         let bob = @0xB0B;
 
-        let mut scenario = test_scenario::begin(alice);        
+        let mut scenario = test_scenario::begin(alice);
         let (mut vault, admin_cap, mut flask, mut fountain, fountain_admin_cap, mut clock) = test_init(&mut scenario);
         {
             scenario.next_tx(alice);
@@ -360,7 +385,7 @@ module fatchoi::bucket_v1 {
     }
 
     #[test_only]
-    fun test_init(scenario: &mut sui::test_scenario::Scenario): 
+    fun test_init(scenario: &mut sui::test_scenario::Scenario):
         (Vault<fatchoi::coin_bucket_v1::COIN_BUCKET_V1>, AdminCap, Flask<BUCK>, Fountain<SBUCK, SUI>, fountain::fountain_core::AdminCap, Clock) {
         use flask::sbuck;
         use sui::test_scenario;
@@ -373,7 +398,7 @@ module fatchoi::bucket_v1 {
             coin_bucket_v1::test_init(scenario.ctx());
             sbuck::init_for_testing(scenario.ctx())
         };
-        
+
         scenario.next_tx(dummy);
         {
             let cap = test_scenario::take_from_sender<coin::TreasuryCap<SBUCK>>(scenario);
@@ -393,10 +418,10 @@ module fatchoi::bucket_v1 {
 
     #[test_only]
     fun test_destroy(
-        vault: Vault<fatchoi::coin_bucket_v1::COIN_BUCKET_V1>, 
-        admin_cap: AdminCap, 
-        flask: Flask<BUCK>, 
-        fountain: Fountain<SBUCK, SUI>, 
+        vault: Vault<fatchoi::coin_bucket_v1::COIN_BUCKET_V1>,
+        admin_cap: AdminCap,
+        flask: Flask<BUCK>,
+        fountain: Fountain<SBUCK, SUI>,
         fountain_admin_cap: fountain::fountain_core::AdminCap,
         clock: Clock
         ) {
