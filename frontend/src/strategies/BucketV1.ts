@@ -6,7 +6,7 @@ const c = {
     BUCK: "0xce7ff77a83ea0cb6fd39bd8748e2ec89a3f41e8efdc3f4eb123e0ca37b184db2::buck::BUCK",
     USDC: "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN"
   },
-  package: "0x39e6a5b3d2d08bf81fa5973bd9e93c5155aac9327715585c422dd86bf950a978",
+  package: "0xc421c353c183e698a80835171c5badb3c5788d00063d020f725f6aaa52a96a3a",
   module: "bucket_v1",
   vault: "0x488f1928b7a8616a07b135da8734e143a7c9b9ab51ef3917adffe1b9f40c23ef",
   flask: "0xc6ecc9731e15d182bc0a46ebe1754a779a4bfb165c201102ad51a36838a1a7b8",

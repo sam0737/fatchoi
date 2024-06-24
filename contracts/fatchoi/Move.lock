@@ -2,7 +2,7 @@
 
 [move]
 version = 2
-manifest_digest = "5655529F4EDFA9560F9DD244715DA9F8AE480F1FD33C3002CA3FF682AD1F2D81"
+manifest_digest = "D96262992BEEA3BC37031BFA1858FB592F15659ADA632C90D6B0E1C91ADCB0A5"
 deps_digest = "397E6A9F7A624706DBDFEE056CE88391A15876868FD18A88504DA74EB458D697"
 dependencies = [
   { name = "BucketProtocol" },
@@ -89,6 +89,8 @@ dependencies = [
   { name = "Wormhole" },
 ]
 
+[env]
+
 [[move.package]]
 name = "Sui"
 source = { git = "https://github.com/MystenLabs/sui.git", rev = "framework/mainnet", subdir = "crates/sui-framework/packages/sui-framework" }
@@ -96,6 +98,12 @@ source = { git = "https://github.com/MystenLabs/sui.git", rev = "framework/mainn
 dependencies = [
   { name = "MoveStdlib" },
 ]
+
+[env.mainnet]
+chain-id = "35834a8a"
+original-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
+latest-published-id = "0xc421c353c183e698a80835171c5badb3c5788d00063d020f725f6aaa52a96a3a"
+published-version = "4"
 
 [[move.package]]
 name = "SupraOracle"
@@ -134,11 +142,3 @@ dependencies = [
 compiler-version = "1.27.2"
 edition = "2024.beta"
 flavor = "sui"
-
-[env]
-
-[env.mainnet]
-chain-id = "35834a8a"
-original-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
-latest-published-id = "0x39e6a5b3d2d08bf81fa5973bd9e93c5155aac9327715585c422dd86bf950a978"
-published-version = "3"
