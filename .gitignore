@@ -1,6 +1,10 @@
 # Sui move output
 build/
 
+# scripts
+*.output
+*.value
+
 # Logs
 logs
 *.log
