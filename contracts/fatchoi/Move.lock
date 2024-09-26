@@ -2,7 +2,7 @@
 
 [move]
 version = 2
-manifest_digest = "3A1D7A40D6D1DA62B7841E1B9762A113EB8AF04DFAD79A5BBABD187CCCCF340D"
+manifest_digest = "E0DF13B97522AF6CF93E0409587CF94AD890BC811B0895FA2F3939F64E73DF31"
 deps_digest = "397E6A9F7A624706DBDFEE056CE88391A15876868FD18A88504DA74EB458D697"
 dependencies = [
   { name = "BucketProtocol" },
@@ -54,7 +54,7 @@ dependencies = [
 
 [[move.package]]
 name = "Flask"
-source = { git = "https://github.com/Sparkling-Finance/contract.git", rev = "sbuck", subdir = "flask" }
+source = { git = "https://github.com/Sparkling-Finance/contract.git", rev = "main", subdir = "flask" }
 
 dependencies = [
   { name = "Sui" },
@@ -131,7 +131,7 @@ dependencies = [
 ]
 
 [move.toolchain-version]
-compiler-version = "1.27.2"
+compiler-version = "1.34.0"
 edition = "2024.beta"
 flavor = "sui"
 
@@ -140,5 +140,5 @@ flavor = "sui"
 [env.mainnet]
 chain-id = "35834a8a"
 original-published-id = "0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1"
-latest-published-id = "0x09e7118478c07efbe5cf382bb2a9752b8baf91827d4c7c9d70cf386cfa451e90"
-published-version = "7"
+latest-published-id = "0xaf3ec272be57a3a76a4fdd41d3e9947fa40ae85dd6ce7811dab5144ac9d85898"
+published-version = "8"

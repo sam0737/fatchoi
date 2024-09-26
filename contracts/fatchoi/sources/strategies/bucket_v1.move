@@ -34,6 +34,7 @@ module fatchoi::bucket_v1 {
     }
 
     // deprecated event
+    #[allow(unused_field)]
     public struct DepositEvent<phantom T> has copy, drop {
         vault_id: ID,
         amount: u64,
@@ -43,6 +44,7 @@ module fatchoi::bucket_v1 {
     }
 
     // deprecated event
+    #[allow(unused_field)]
     public struct WithdrawEvent<phantom T> has copy, drop {
         vault_id: ID,
         burnt: u64,
@@ -52,6 +54,7 @@ module fatchoi::bucket_v1 {
     }
 
     // deprecated event
+    #[allow(unused_field)]
     public struct RestakeEvent<phantom T> has copy, drop {
         vault_id: ID,
         before: u64,
@@ -251,7 +254,7 @@ module fatchoi::bucket_v1 {
 
         let (mut sbucks, suis) = vault.unstake_protocol(clock, fountain);
         vault.profit.join(suis);
-
+    
         // profit is reserved for admin, then the remaining is converted to SBUCKS and restaked
         if (vault.profit.value() > vault.profit_target) {
             let delta = vault.profit.value() - vault.profit_target;
