@@ -49,7 +49,8 @@ export default function WalletStatus() {
       typeArguments: [Constant.coin.token],
       arguments: [
         tx.object(Constant.vault),
-        tx.object(SUI_CLOCK_OBJECT_ID),
+        tx.object(SUI_CLOCK_OBJECT_ID),        
+        tx.object(Constant.bucket_protocol),
         tx.object(Constant.flask),
         tx.object(Constant.fountain),
         coinWithBalance({ type: Constant.coin.BUCK, balance: buckSelected }),
@@ -80,6 +81,7 @@ export default function WalletStatus() {
       arguments: [
         tx.object(Constant.vault),
         tx.object(SUI_CLOCK_OBJECT_ID),
+        tx.object(Constant.bucket_protocol),
         tx.object(Constant.flask),
         tx.object(Constant.fountain),
         coinWithBalance({ type: Constant.coin.token, balance: fcSelected }),

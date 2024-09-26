@@ -8,9 +8,10 @@ module fatchoi::bucket_v1 {
     use fatchoi::math;
     use sui::balance::{Self, Balance, Supply};
     use flask::sbuck::{Flask, SBUCK};
-    use bucket_protocol::buck::{BUCK};
+    use bucket_protocol::buck::{BUCK, BucketProtocol};
     use fountain::fountain_core::{Fountain, StakeProof};
-
+    
+    const ERR_FUNCTION_DEPRECATED: u64 = 99;
     const ERR_WRONG_VERSION: u64 = 1001;
     const ERR_INVALID_ADMIN_CAP: u64 = 1002;
     const ERR_INSUFFICIENT_BALANCE: u64 = 1003;
@@ -123,6 +124,8 @@ module fatchoi::bucket_v1 {
         transfer::public_transfer(coin::from_balance(profit, ctx), ctx.sender());
     }
 
+    #[deprecated]
+    #[allow(unused_variable)]
     public fun deposit<T>(
         vault: &mut Vault<T>,
         clock: &Clock,
@@ -131,10 +134,22 @@ module fatchoi::bucket_v1 {
         deposit: Balance<BUCK>,
         ctx: &mut TxContext
         ): Balance<T> {
+        abort ERR_FUNCTION_DEPRECATED
+    }
+
+    fun deposit_v2<T>(
+        vault: &mut Vault<T>,
+        clock: &Clock,
+        bucket_protocol: &mut BucketProtocol,
+        flask: &mut Flask<BUCK>,
+        fountain: &mut Fountain<SBUCK, SUI>,
+        deposit: Balance<BUCK>,
+        ctx: &mut TxContext
+        ): Balance<T> {
         assert_pacakge_version(vault);
 
         let deposit_amount = deposit.value();
-        let sbucks = flask.deposit(coin::from_balance(deposit, ctx));
+        let sbucks = bucket_protocol.buck_to_sbuck(flask, clock, deposit);
         let amount = if (vault.total_holding > 0) {
             math::mul_factor(sbucks.value(), vault.token_supply.supply_value(), vault.total_holding)
         } else {
@@ -155,14 +170,29 @@ module fatchoi::bucket_v1 {
         vault.token_supply.increase_supply(amount)
     }
 
-    entry fun deposit_entry<T>(vault: &mut Vault<T>, clock: &Clock, flask: &mut Flask<BUCK>, fountain: &mut Fountain<SBUCK, SUI>, deposit: Coin<BUCK>, ctx: &mut TxContext) {
-        let balance = deposit(vault, clock, flask, fountain, deposit.into_balance(), ctx);
+    entry fun deposit_entry<T>(vault: &mut Vault<T>, clock: &Clock, bucket_protocol: &mut BucketProtocol, flask: &mut Flask<BUCK>, fountain: &mut Fountain<SBUCK, SUI>, deposit: Coin<BUCK>, ctx: &mut TxContext) {
+        let balance = deposit_v2(vault, clock, bucket_protocol, flask, fountain, deposit.into_balance(), ctx);
         transfer::public_transfer(coin::from_balance(balance, ctx), ctx.sender());
     }
-
+    
+    #[deprecated]
+    #[allow(unused_variable)]
     public fun withdraw<T>(
         vault: &mut Vault<T>,
         clock: &Clock,
+        flask: &mut Flask<BUCK>,
+        fountain: &mut Fountain<SBUCK, SUI>,
+        withdraw: Balance<T>,
+        ctx: &mut TxContext
+        ): Balance<BUCK> {
+        abort ERR_FUNCTION_DEPRECATED
+    }
+
+    
+    fun withdraw_v2<T>(
+        vault: &mut Vault<T>,
+        clock: &Clock,
+        bucket_protocol: &mut BucketProtocol,
         flask: &mut Flask<BUCK>,
         fountain: &mut Fountain<SBUCK, SUI>,
         withdraw: Balance<T>,
@@ -185,7 +215,7 @@ module fatchoi::bucket_v1 {
         vault.stake_protocol(clock, fountain, sbucks, ctx);
         let burnt_amount = withdraw.value();
         vault.token_supply.decrease_supply(withdraw);
-        let bucks = flask.withdraw(coin::from_balance(withdraw_balance, ctx));
+        let bucks = bucket_protocol.sbuck_to_buck(flask, clock, withdraw_balance);
 
         event::emit(Withdraw {
             vault_id: object::id(vault),
@@ -197,8 +227,8 @@ module fatchoi::bucket_v1 {
         bucks
     }
 
-    entry fun withdraw_entry<T>(vault: &mut Vault<T>, clock: &Clock, flask: &mut Flask<BUCK>, fountain: &mut Fountain<SBUCK, SUI>, withdraw: Coin<T>, ctx: &mut TxContext) {
-        let balance = withdraw(vault, clock, flask, fountain, withdraw.into_balance(), ctx);
+    entry fun withdraw_entry<T>(vault: &mut Vault<T>, clock: &Clock, bucket_protocol: &mut BucketProtocol, flask: &mut Flask<BUCK>, fountain: &mut Fountain<SBUCK, SUI>, withdraw: Coin<T>, ctx: &mut TxContext) {
+        let balance = withdraw_v2(vault, clock, bucket_protocol, flask, fountain, withdraw.into_balance(), ctx);
         transfer::public_transfer(coin::from_balance(balance, ctx), ctx.sender());
     }
 
@@ -238,6 +268,10 @@ module fatchoi::bucket_v1 {
         (sbucks, suis)
     }
 
+    
+
+    #[deprecated]
+    #[allow(unused_variable)]
     public entry fun restake_protocol<T, X>(
         vault: &mut Vault<T>,
         admin_cap: &AdminCap,
@@ -245,6 +279,21 @@ module fatchoi::bucket_v1 {
         config: &GlobalConfig,
         pool_a: &mut Pool<X, SUI>,
         pool_b: &mut Pool<BUCK, X>,
+        flask: &mut Flask<BUCK>,
+        fountain: &mut Fountain<SBUCK, SUI>,
+        ctx: &mut TxContext
+        ) {
+        abort ERR_FUNCTION_DEPRECATED
+    }
+
+    public entry fun restake_protocol_v2<T, X>(
+        vault: &mut Vault<T>,
+        admin_cap: &AdminCap,
+        clock: &Clock,
+        config: &GlobalConfig,
+        pool_a: &mut Pool<X, SUI>,
+        pool_b: &mut Pool<BUCK, X>,
+        bucket_protocol: &mut BucketProtocol,
         flask: &mut Flask<BUCK>,
         fountain: &mut Fountain<SBUCK, SUI>,
         ctx: &mut TxContext
@@ -269,7 +318,7 @@ module fatchoi::bucket_v1 {
             suis.destroy_zero();
 
             if (bucks.value() > 0) {
-                sbucks.join(flask.deposit(coin::from_balance(bucks, ctx)));
+                sbucks.join(bucket_protocol.buck_to_sbuck(flask, clock, bucks));
             } else {
                 bucks.destroy_zero();
             };

@@ -1,7 +1,7 @@
 [package]
 name = "fatchoi"
 edition = "2024.beta" # edition = "legacy" to use legacy (pre-2024) Move
-published-at = "0xaf3ec272be57a3a76a4fdd41d3e9947fa40ae85dd6ce7811dab5144ac9d85898"
+published-at = "0x4d28c6aa737092115906efc7aa8f71ecb50e89fb65fde494f6d7639a68136537"
 
 # license = ""           # e.g., "MIT", "GPL", "Apache 2.0"
 # authors = ["..."]      # e.g., ["Joe Smith (joesmith@noemail.com)", "John Snow (johnsnow@noemail.com)"]
@@ -10,7 +10,7 @@ published-at = "0xaf3ec272be57a3a76a4fdd41d3e9947fa40ae85dd6ce7811dab5144ac9d858
 CetusClmm = { git = "https://github.com/CetusProtocol/cetus-clmm-interface.git", subdir = "sui/clmmpool", rev = "mainnet" }
 # CetusClmmMock = { local = "mocks/cetus-clmm" }
 Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/mainnet", override = true }
-Flask = { git = "https://github.com/Sparkling-Finance/contract.git", subdir = "flask", rev = "main" }
+# Flask = { git = "https://github.com/Sparkling-Finance/contract.git", subdir = "flask", rev = "main" }
 fountain = { git = "https://github.com/Fountain-Fi/contract.git", subdir = "fountain", rev = "main" }
 BucketProtocol = { git = "https://github.com/Bucket-Protocol/bucket-interface.git", subdir = "bucket-protocol", rev = "main" }
 # BucketProtocolMock = { local = "mocks/bucket-protocol" }

@@ -6,9 +6,10 @@ const c = {
     BUCK: "0xce7ff77a83ea0cb6fd39bd8748e2ec89a3f41e8efdc3f4eb123e0ca37b184db2::buck::BUCK",
     USDC: "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN"
   },
-  package: "0xaf3ec272be57a3a76a4fdd41d3e9947fa40ae85dd6ce7811dab5144ac9d85898",
+  package: "0x4d28c6aa737092115906efc7aa8f71ecb50e89fb65fde494f6d7639a68136537",
   module: "bucket_v1",
   vault: "0x488f1928b7a8616a07b135da8734e143a7c9b9ab51ef3917adffe1b9f40c23ef",
+  bucket_protocol: "0x9e3dab13212b27f5434416939db5dec6a319d15b89a84fd074d03ece6350d3df",
   flask: "0xc6ecc9731e15d182bc0a46ebe1754a779a4bfb165c201102ad51a36838a1a7b8",
   fountain: "0xbdf91f558c2b61662e5839db600198eda66d502e4c10c4fc5c683f9caca13359",
 }
