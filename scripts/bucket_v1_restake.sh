@@ -1,5 +1,5 @@
 #!/bin/bash
-PATH=$PATH:/home/linuxbrew/.linuxbrew/bin
+PATH=$PATH:$HOME/bin:/home/linuxbrew/.linuxbrew/bin
 
 cd "$(dirname "$0")"
 script_name=$(basename "$0" .sh)
