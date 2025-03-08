@@ -268,8 +268,6 @@ module fatchoi::bucket_v1 {
         (sbucks, suis)
     }
 
-    
-
     #[deprecated]
     #[allow(unused_variable)]
     public entry fun restake_protocol<T, X>(
@@ -286,6 +284,8 @@ module fatchoi::bucket_v1 {
         abort ERR_FUNCTION_DEPRECATED
     }
 
+    #[deprecated]
+    #[allow(unused_variable)]
     public entry fun restake_protocol_v2<T, X>(
         vault: &mut Vault<T>,
         admin_cap: &AdminCap,
@@ -293,6 +293,21 @@ module fatchoi::bucket_v1 {
         config: &GlobalConfig,
         pool_a: &mut Pool<X, SUI>,
         pool_b: &mut Pool<BUCK, X>,
+        bucket_protocol: &mut BucketProtocol,
+        flask: &mut Flask<BUCK>,
+        fountain: &mut Fountain<SBUCK, SUI>,
+        ctx: &mut TxContext
+        ) {
+        abort ERR_FUNCTION_DEPRECATED
+    }
+
+    public entry fun restake_protocol_v3<T, X>(
+        vault: &mut Vault<T>,
+        admin_cap: &AdminCap,
+        clock: &Clock,
+        config: &GlobalConfig,
+        pool_a: &mut Pool<X, SUI>,
+        pool_b: &mut Pool<X, BUCK>,
         bucket_protocol: &mut BucketProtocol,
         flask: &mut Flask<BUCK>,
         fountain: &mut Fountain<SBUCK, SUI>,
@@ -311,7 +326,7 @@ module fatchoi::bucket_v1 {
 
             // swap SUIs to BUCKs
             let (xs, suis) = fatchoi::swap::swap(config, pool_a, balance::zero(), suis, false, clock);
-            let (bucks, xs) = fatchoi::swap::swap(config, pool_b, balance::zero(), xs, false, clock);
+            let (xs, bucks) = fatchoi::swap::swap(config, pool_b, xs, balance::zero(), true, clock);
             assert!(xs.value() == 0, ERR_SWAP_CLEAR_INTERMEDIATE);
             xs.destroy_zero();
             assert!(suis.value() == 0, ERR_SWAP_CLEAR_SOURCE);
