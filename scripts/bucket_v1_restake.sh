@@ -11,7 +11,7 @@ script_name=$(basename "$0" .sh)
 # fi
 
 sui client call \
-    --package 0x4d57d8b3e3450ec5d4c2fa5e5994b95512ab373538c8e59ea635c7ddaa3fbadf \
+    --package 0xa22c75ce11b9d469b6a2a5e5dee8431e0faccbc95c02fc4a71af5661800769de \
     --module bucket_v1 --function restake_protocol_v3 \
     --type-args 0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1::coin_bucket_v1::COIN_BUCKET_V1 0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC \
     --args 0x488f1928b7a8616a07b135da8734e143a7c9b9ab51ef3917adffe1b9f40c23ef 0x93d1ebacfeef764a8d1f01bacf01339bdba083ca1bdc839e05c1ce060a3cb121 0x6 0xdaa46292632c3c4d8f31f23ea0f9b36a28ff3677e9684980e4438403a67a3d8f \
