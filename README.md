@@ -1,3 +1,10 @@
+# Setup
+
+## Sui installation
+
+`brew install sui` or 
+`tar -zxvf SUI_TARBALL.tgz ./sui`
+
 # Deployment Information
 
 ## Upgrade
@@ -6,15 +13,15 @@ sui client upgrade --upgrade-capability 0xcc3ded817c7573c2bc3f90451680f4579b2d2a
 
 ### Update
 
-* ./contracts/fatchoi/Move.toml:published-at = "0x4d57d8b3e3450ec5d4c2fa5e5994b95512ab373538c8e59ea635c7ddaa3fbadf"
-* ./README.md:Latest: 0x4d57d8b3e3450ec5d4c2fa5e5994b95512ab373538c8e59ea635c7ddaa3fbadf
-* ./scripts/bucket_v1_restake.sh:    --package 0x4d57d8b3e3450ec5d4c2fa5e5994b95512ab373538c8e59ea635c7ddaa3fbadf \
-* ./frontend/src/strategies/BucketV1.ts:  package: "0x4d57d8b3e3450ec5d4c2fa5e5994b95512ab373538c8e59ea635c7ddaa3fbadf",
+* ./contracts/fatchoi/Move.toml:published-at = "0x228b87da19ecedf1348beccc372eacb7cb71ba2f6b84e7da941f53ada53f86cd"
+* ./README.md:Latest: 0x228b87da19ecedf1348beccc372eacb7cb71ba2f6b84e7da941f53ada53f86cd
+* ./scripts/bucket_v1_restake.sh:    --package 0x228b87da19ecedf1348beccc372eacb7cb71ba2f6b84e7da941f53ada53f86cd \
+* ./frontend/src/strategies/BucketV1.ts:  package: "0x228b87da19ecedf1348beccc372eacb7cb71ba2f6b84e7da941f53ada53f86cd",
 
 ## fatchoi contract
 
 Base: 0x8227925a95d62bffa724e2ce9d00a5ead3516a3cb2618a93ba9a4ee5ebd554c1
-Latest: 0x4d57d8b3e3450ec5d4c2fa5e5994b95512ab373538c8e59ea635c7ddaa3fbadf
+Latest: 0x228b87da19ecedf1348beccc372eacb7cb71ba2f6b84e7da941f53ada53f86cd
 
 ## Deposit
 

@@ -2,13 +2,24 @@
 
 [move]
 version = 3
-manifest_digest = "C8FB4FF9480A01815C483A3BFF0AE13D2C37C27E131E903E479C9ECD6231F6D1"
-deps_digest = "F9B494B64F0615AED0E98FC12A85B85ECD2BC5185C22D30E7F67786BB52E507C"
+manifest_digest = "90F09C21D80945FEBA3944C48F9AEA78C47C80048CB9F619ABF2B350F546FD44"
+deps_digest = "397E6A9F7A624706DBDFEE056CE88391A15876868FD18A88504DA74EB458D697"
 dependencies = [
   { id = "BucketProtocol", name = "BucketProtocol" },
   { id = "CetusClmm", name = "CetusClmm" },
+  { id = "MoveStdlib", name = "MoveStdlib" },
   { id = "Sui", name = "Sui" },
   { id = "fountain", name = "fountain" },
+]
+
+[[move.package]]
+id = "Bridge"
+source = { git = "https://github.com/MystenLabs/sui.git", rev = "04f11afaf5e0", subdir = "crates/sui-framework/packages/bridge" }
+
+dependencies = [
+  { id = "MoveStdlib", name = "MoveStdlib" },
+  { id = "Sui", name = "Sui" },
+  { id = "SuiSystem", name = "SuiSystem" },
 ]
 
 [[move.package]]
@@ -35,10 +46,13 @@ id = "BucketProtocol"
 source = { git = "https://github.com/Bucket-Protocol/bucket-interface.git", rev = "main", subdir = "bucket-protocol" }
 
 dependencies = [
+  { id = "Bridge", name = "Bridge" },
   { id = "BucketFramework", name = "BucketFramework" },
   { id = "BucketOracle", name = "BucketOracle" },
   { id = "Flask", name = "Flask" },
+  { id = "MoveStdlib", name = "MoveStdlib" },
   { id = "Sui", name = "Sui" },
+  { id = "SuiSystem", name = "SuiSystem" },
 ]
 
 [[move.package]]
@@ -97,6 +111,15 @@ dependencies = [
 ]
 
 [[move.package]]
+id = "SuiSystem"
+source = { git = "https://github.com/MystenLabs/sui.git", rev = "04f11afaf5e0", subdir = "crates/sui-framework/packages/sui-system" }
+
+dependencies = [
+  { id = "MoveStdlib", name = "MoveStdlib" },
+  { id = "Sui", name = "Sui" },
+]
+
+[[move.package]]
 id = "SupraOracle"
 source = { git = "https://github.com/Bucket-Protocol/oracle.git", rev = "mainnet", subdir = "partners/supra" }
 
@@ -130,7 +153,7 @@ dependencies = [
 ]
 
 [move.toolchain-version]
-compiler-version = "1.45.2"
+compiler-version = "1.46.3"
 edition = "2024.beta"
 flavor = "sui"
 
@@ -139,5 +162,5 @@ flavor = "sui"
 [env.mainnet]
 chain-id = "35834a8a"
 original-published-id = "0x0000000000000000000000000000000000000000000000000000000000000000"
-latest-published-id = "0xa22c75ce11b9d469b6a2a5e5dee8431e0faccbc95c02fc4a71af5661800769de"
-published-version = "12"
+latest-published-id = "0x228b87da19ecedf1348beccc372eacb7cb71ba2f6b84e7da941f53ada53f86cd"
+published-version = "13"
